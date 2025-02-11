@@ -39,10 +39,8 @@ class GithubController extends Controller
 
 				return redirect()->intended('home');
 			} else {
-				$newUser = User::updateOrCreate(['email' => $user->email], [
-					'name' => $user->name,
-					'github_id' => $user->id,
-					'password' => encrypt('123456dummy')
+				$newUser = User::updateOrCreate(['github_id' => $user->id], [
+					'name' => $user->nickname,
 				]);
 
 				Auth::login($newUser);
