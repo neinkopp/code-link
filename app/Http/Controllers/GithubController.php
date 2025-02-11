@@ -39,6 +39,7 @@ class GithubController extends Controller
 
 				return redirect()->intended('home');
 			} else {
+				dd($user);
 				$newUser = User::updateOrCreate(['email' => $user->email], [
 					'name' => $user->name,
 					'github_id' => $user->id,
