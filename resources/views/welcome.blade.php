@@ -9,7 +9,7 @@
     <body>
     <header>
         <div class="logo">
-            <img src="images/Logo.svg"  alt="Codelink Logo">
+            <img src="images/App_Logo.png"  alt="Codelink Logo">
         </div>
         <nav>
             <ul>
@@ -26,26 +26,26 @@
 
     <main>
         <div class="form-container">
-            <img src="images/Logo.svg" alt="Codelink Logo" class="form-logo">
-            <h2>Judge me by my code BITCH</h2>
+            <img src="images/App_Logo.png" alt="Codelink Logo" class="form-logo">
+            <h2><p>&#128151;</p>Code my heart</h2>
             <form action="#">
                 <label for="name">Name</label>
-                <input type="text" id="name" placeholder="Value" required>
+                <input type="text" id="name" placeholder="..." required>
 
                 <label for="surname">Surname</label>
-                <input type="text" id="surname" placeholder="Value" required>
+                <input type="text" id="surname" placeholder="..." required>
 
                 <label for="dob">Date of birth</label>
                 <input type="date" id="dob" placeholder="dd/mm/yyyy" required>
 
                 <label for="email">Email</label>
-                <input type="email" id="email" placeholder="Value" required>
+                <input type="email" id="email" placeholder="..." required>
 
                 <label for="occupation">Occupation</label>
-                <input type="text" id="occupation" placeholder="Value" required>
+                <input type="text" id="occupation" placeholder="..." required>
 
                 <label for="languages">Your favorite programming languages</label>
-                <textarea id="languages" placeholder="Value"></textarea>
+                <textarea id="languages" placeholder="Please don't say Python"></textarea>
 
                 <button type="submit" class="submit-btn">Sign up</button>
             </form>
