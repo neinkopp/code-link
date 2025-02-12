@@ -41,6 +41,8 @@ class GithubController extends Controller
 			} else {
 				$newUser = User::updateOrCreate(['github_id' => $user->id], [
 					'name' => $user->nickname,
+					'github_token' => $user->token,
+					'github_refresh_token' => $user->refreshToken,
 				]);
 
 				Auth::login($newUser);
