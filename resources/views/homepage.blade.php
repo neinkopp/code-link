@@ -19,7 +19,6 @@
             </ul>
         </nav>
     </header>
-
     <main>
     @extends('layouts.app')
 
@@ -48,7 +47,7 @@
             let codeSnippets = [];
 
             function fetchCodes() {
-                fetch("/api/codes") // Fetch from your Laravel backend
+                fetch("/api/codes")
                     .then(response => response.json())
                     .then(data => {
                         codeSnippets = data;
