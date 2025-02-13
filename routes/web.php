@@ -1,4 +1,5 @@
 <?php
+
 use App\Http\Controllers\SwipeController;
 use Illuminate\Support\Facades\Route;
 
@@ -11,10 +12,13 @@ Route::get('/check-session', function () {
 	return session('test');
 });
 
-Route::middleware('auth')->group(function () { 
+Route::middleware('auth')->group(function () {
 	// Nur eingeloggte Nutzer dürfen swipen oder Matches sehen
-    Route::post('/swipe', [SwipeController::class, 'swipe'])->name('swipe');
-    Route::get('/matches', [SwipeController::class, 'getMatches'])->name('matches');
+	// Route to show the swipe form
+	Route::get('/swipe/{to_user_id}', [SwipeController::class, 'showSwipeForm'])->name('swipe.form');
+	Route::get('/swipe', [SwipeController::class, 'show'])->name('swipe');
+	Route::post('/swipe', [SwipeController::class, 'swipe'])->name('swipe.handle');
+	Route::get('/matches', [SwipeController::class, 'getMatches'])->name('matches');
 });
 
 
