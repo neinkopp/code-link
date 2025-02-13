@@ -14,11 +14,21 @@ class SwipeController extends Controller
 	public function show()
 	{
 		// Benutzer auflisten, die nicht der aktuelle Benutzer sind
-		$usersToSwipeOn = User::where('id', '!=', Auth::id())->get();
+		//$usersToSwipeOn = User::where('id', '!=', Auth::id())->get();
+		
+		$userId = Auth::id();
 
+		// Alle Nutzer abrufen, die nicht der aktuelle Benutzer sind
+		$usersToSwipeOn = User::where('id', '!=', $userId)
+			->whereNotIn('id', Swipe::where('from_user_id', $userId)->pluck('to_user_id')) // Bereits geswipte Nutzer ausschließen
+			->inRandomOrder() // Zufällige Reihenfolge
+			->get(); 
+	
 		return view('swipe', compact('usersToSwipeOn'));
 	}
+	
 
+	
 	public function swipe(Request $request)
 	{ //request als Parameter entgegen nehmen
 		$user = Auth::user(); //eingeloggten Nutzer zuruckgeben 
