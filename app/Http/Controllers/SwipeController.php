@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth; //Verwaltet die Authentifizierung und gibt 
 use Illuminate\Http\Request; //ermöglicht den Zugriff auf Daten, die von einem HTTP-Request gesendet wurden.
 use Illuminate\Support\Facades\DB; //importiert die DB Facade um direte SQL Queries zu schreiben 
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
 
 class SwipeController extends Controller
 {
@@ -15,20 +16,20 @@ class SwipeController extends Controller
 	{
 		// Benutzer auflisten, die nicht der aktuelle Benutzer sind
 		//$usersToSwipeOn = User::where('id', '!=', Auth::id())->get();
-		
+
 		$userId = Auth::id();
 
 		// Alle Nutzer abrufen, die nicht der aktuelle Benutzer sind
 		$usersToSwipeOn = User::where('id', '!=', $userId)
 			->whereNotIn('id', Swipe::where('from_user_id', $userId)->pluck('to_user_id')) // Bereits geswipte Nutzer ausschließen
 			->inRandomOrder() // Zufällige Reihenfolge
-			->get(); 
-	
+			->get();
+
 		return view('swipe', compact('usersToSwipeOn'));
 	}
-	
 
-	
+
+
 	public function swipe(Request $request)
 	{ //request als Parameter entgegen nehmen
 		$user = Auth::user(); //eingeloggten Nutzer zuruckgeben 

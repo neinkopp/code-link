@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
 use Exception;
 use App\Models\User;
@@ -37,7 +36,7 @@ class GithubController extends Controller
 
 				Auth::login($findUser);
 
-				return redirect()->intended('home');
+				return redirect()->intended('swipe');
 			} else {
 				$newUser = User::updateOrCreate(['github_id' => $user->id], [
 					'name' => $user->nickname,
@@ -47,7 +46,7 @@ class GithubController extends Controller
 
 				Auth::login($newUser);
 
-				return redirect()->intended('home');
+				return redirect()->intended('create-profile');
 			}
 		} catch (Exception $e) {
 			dd($e);
