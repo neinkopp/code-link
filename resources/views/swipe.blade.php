@@ -20,7 +20,10 @@
 				<li><a href="#">Contact</a></li>
 			</ul>
 			<div class="auth-buttons">
-				<button class="login">Log out</button>
+				<form action="{{ route('logout') }}" method="POST">
+					@csrf
+					<button class="login">Log out</button>
+				</form>
 			</div>
 		</nav>
 	</header>
