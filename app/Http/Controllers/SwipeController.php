@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth; //Verwaltet die Authentifizierung und gibt 
 use Illuminate\Http\Request; //ermöglicht den Zugriff auf Daten, die von einem HTTP-Request gesendet wurden.
 use Illuminate\Support\Facades\DB; //importiert die DB Facade um direte SQL Queries zu schreiben 
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
 
 class SwipeController extends Controller
 {
