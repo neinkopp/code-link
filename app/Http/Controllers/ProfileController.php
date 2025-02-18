@@ -63,7 +63,7 @@ class ProfileController extends Controller
 			);
 		}
 
-		return redirect()->route('profile.created');
+		return redirect()->route('swipe');
 	}
 
 
@@ -79,16 +79,29 @@ class ProfileController extends Controller
 			'name' => 'required|string|max:255',
 			'dob' => 'required|date',
 			'occupation' => 'required|string',
-			'programming_langs' => 'required|json',
-			'social_media' => 'nullable|url',
+			'programming_langs' => 'required',
+			'social_media' => 'nullable',
+			'showcase_code' => 'nullable|string',
 		]);
 		$profile = Auth::user()->profile;
+		$explodedProgrammingLangsArray = explode(',', $request->programming_langs);
+		$codeChanged = $profile->showcase_code !== $request->showcase_code;
+
 		$profile->update([
 			'name' => $request->name,
 			'occupation' => $request->occupation,
-			'programming_langs' => json_encode($request->programming_langs),
+			'programming_langs' => json_encode($explodedProgrammingLangsArray),
 			'social_media' => $request->social_media,
+			'showcase_code' => $request->showcase_code,
+
 		]);
+
+		if ($codeChanged) {
+			ProcessImageGeneration::dispatch(
+				$request->showcase_code,
+				Auth::id()
+			);
+		}
 
 		return redirect()->route('profile.show', Auth::user()->id)->with('success', 'Profil updated');
 	}
