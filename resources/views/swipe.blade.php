@@ -48,6 +48,14 @@
 		<button type="submit">Swipen</button>
 	</form>
 
+	<!-- hidden form to submit swipes -->
+	<form id="swipeForm" action="{{ route('swipe') }}" method="POST">
+		@csrf
+		<input type="hidden" name="from_user_id" value="{{ auth()->id() }}"> <!-- Get current user ID -->
+		<input type="hidden" name="to_user_id" id="toUserId">
+		<input type="hidden" name="liked" id="liked">
+	</form>
+
 	@if(session('error'))
 	<p>{{ session('error') }}</p>
 	@endif
@@ -72,15 +80,15 @@
 		class Card {
 			constructor({
 				imageUrl,
-				avatarUrl,
 				username,
+				userId,
 				onDismiss,
 				onLike,
 				onDislike
 			}) {
 				this.imageUrl = imageUrl;
-				this.avatarUrl = avatarUrl;
 				this.username = username;
+				this.userId = userId;
 				this.onDismiss = onDismiss;
 				this.onLike = onLike;
 				this.onDislike = onDislike;
@@ -91,22 +99,23 @@
 			#offsetX;
 			#offsetY;
 
-			#isTouchDevice = () => {
-				return (('ontouchstart' in window) ||
-					(navigator.maxTouchPoints > 0) ||
-					(navigator.msMaxTouchPoints > 0));
-			}
+			#isTouchDevice = () => ('ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0);
 
 			#init = () => {
 				const card = document.createElement('div');
 				card.classList.add('card');
+				card.setAttribute('data-user-id', this.userId);
+
 				const img = document.createElement('img');
 				img.src = this.imageUrl;
 				card.append(img);
+
 				const name = document.createElement('p');
 				name.textContent = this.username;
 				card.append(name);
+
 				this.element = card;
+
 				if (this.#isTouchDevice()) {
 					this.#listenToTouchEvents();
 				} else {
@@ -125,13 +134,13 @@
 					this.#startPoint = {
 						x: clientX,
 						y: clientY
-					}
+					};
 					document.addEventListener('touchmove', this.#handleTouchMove);
 					this.element.style.transition = 'transform 0s';
 				});
 
 				document.addEventListener('touchend', this.#handleTouchEnd);
-				document.addEventListener('cancel', this.#handleTouchEnd);
+				document.addEventListener('touchcancel', this.#handleTouchEnd);
 			}
 
 			#listenToMouseEvents = () => {
@@ -143,16 +152,13 @@
 					this.#startPoint = {
 						x: clientX,
 						y: clientY
-					}
+					};
 					document.addEventListener('mousemove', this.#handleMouseMove);
 					this.element.style.transition = 'transform 0s';
 				});
 
 				document.addEventListener('mouseup', this.#handleMoveUp);
-
-				this.element.addEventListener('dragstart', (e) => {
-					e.preventDefault();
-				});
+				this.element.addEventListener('dragstart', (e) => e.preventDefault());
 			}
 
 			#handleMove = (x, y) => {
@@ -160,6 +166,7 @@
 				this.#offsetY = y - this.#startPoint.y;
 				const rotate = this.#offsetX * 0.1;
 				this.element.style.transform = `translate(${this.#offsetX}px, ${this.#offsetY}px) rotate(${rotate}deg)`;
+
 				if (Math.abs(this.#offsetX) > this.element.clientWidth * 0.7) {
 					this.#dismiss(this.#offsetX > 0 ? 1 : -1);
 				}
@@ -204,12 +211,28 @@
 				document.removeEventListener('mousemove', this.#handleMouseMove);
 				document.removeEventListener('touchend', this.#handleTouchEnd);
 				document.removeEventListener('touchmove', this.#handleTouchMove);
+
 				this.element.style.transition = 'transform 1s';
 				this.element.style.transform = `translate(${direction * window.innerWidth}px, ${this.#offsetY}px) rotate(${90 * direction}deg)`;
 				this.element.classList.add('dismissing');
+
 				setTimeout(() => {
 					this.element.remove();
 				}, 1000);
+
+				const liked = direction === 1 ? 1 : 0;
+				const toUserId = this.userId;
+
+				if (!toUserId) {
+					console.error("Error: No user ID found!");
+					return;
+				}
+
+				// Fill in the hidden form and submit
+				document.getElementById('toUserId').value = toUserId;
+				document.getElementById('liked').value = liked;
+				document.getElementById('swipeForm').submit();
+
 				if (typeof this.onDismiss === 'function') {
 					this.onDismiss();
 				}
@@ -226,13 +249,12 @@
 		const like = document.querySelector('#like');
 		const dislike = document.querySelector('#dislike');
 
-		let cardCount = 0;
-
-		function appendNewCard(imageUrl, username) {
+		function appendNewCard(imageUrl, username, userId) {
 			const card = new Card({
 				imageUrl: imageUrl,
 				username: username,
-				onDismiss: appendNewCard,
+				userId: userId,
+				onDismiss: () => {},
 				onLike: () => {
 					like.style.animationPlayState = 'running';
 					like.classList.toggle('trigger');
@@ -243,13 +265,13 @@
 				}
 			});
 			swiper.append(card.element);
-			cardCount++;
 		}
 
 		@foreach($usersToSwipeOn as $user)
 		appendNewCard('{{ $user['
 			avatar_url '] }}', '{{ $user['
-			login '] }}');
+			login '] }}', '{{ $user['
+			id '] }}');
 		@endforeach
 	</script>
 

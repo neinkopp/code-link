@@ -1,227 +1,238 @@
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-  font-family: Arial, sans-serif;
-  background-color: #8B5E56; 
-  color: #fff;
+    font-family: Arial, sans-serif;
+    background-color: #8b5e56;
+    color: #fff;
 }
 
 header {
-  background-color: #4C2F28;
-  display: flex;
-  justify-content: space-between;
-  padding: 20px 40px;
-  align-items: center;
+    background-color: #5c3228;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 40px;
+    align-items: center;
 }
 
 .logo img {
-  width: 70px;
+    width: 70px;
 }
 
 nav {
-  display: flex;
-  align-items: center;
-  gap: 50px; 
+    display: flex;
+    align-items: center;
+    gap: 50px;
 }
 
 nav ul {
-  list-style: none;
-  display: flex;
-  gap: 20px;
+    list-style: none;
+    display: flex;
+    gap: 20px;
 }
 
 nav ul li a {
-  color: #fff;
-  text-decoration: none;
+    color: #fff;
+    text-decoration: none;
 }
 
 .auth-buttons {
-  display: flex;
-  gap: 10px;
+    display: flex;
+    gap: 10px;
 }
 
 .auth-buttons .login,
 .auth-buttons .signup {
-  background-color: #DDAA63;
-  border: none;
-  padding: 10px 15px;
-  cursor: pointer;
-  border-radius: 5px;
+    background-color: #d4800a;
+    font-family: arial;
+    color: white;
+    font-size: 1em;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
 }
 
 .auth-buttons .login:hover,
 .auth-buttons .signup:hover {
-  background-color: #C89650;
+    background-color: #c89650;
 }
 
 main {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding-top: 60px;
 }
 
 .form-container {
-  background-color: #F3EDE7; 
-  padding: 40px;
-  border-radius: 10px;
-  color: #8B5E56;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  width: 300px;
+    background-color: #f3ede7;
+    padding: 40px;
+    border-radius: 10px;
+    color: #8b5e56;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 400px;
+    height: auto;
 }
 
 .form-logo {
-  width: 80px;
-  margin-bottom: 20px;
+    width: 80px;
+    margin-bottom: 20px;
 }
 
 h2 {
-  font-size: 24px;
-  margin-bottom: 20px;
+    font-size: 24px;
+    margin-bottom: 20px;
 }
 
 form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 label {
-  text-align: left;
-  font-size: 14px;
-  color: #8B5E56;
+    text-align: left;
+    font-size: 14px;
+    color: #8b5e56;
 }
 
 input,
 textarea {
-  padding: 10px;
-  border: 2px solid #DDAA63;
-  border-radius: 5px;
-  font-size: 16px;
-  color: #333;
+    padding: 5px;
+    border: 2px solid #ddaa63;
+    border-radius: 5px;
+    font-size: 16px;
+    color: #333;
+}
+
+select {
+    padding: 10px;
+    border: 2px solid #ddaa63;
+    border-radius: 5px;
+    font-size: 16px;
+    color: #333;
 }
 
 textarea {
-  height: 60px;
+    height: 60px;
 }
 
 input::placeholder,
 textarea::placeholder {
-  color: #DDAA63;
+    color: #ddaa63;
 }
 
 .submit-btn {
-  background-color: #DDAA63;
-  border: none;
-  padding: 10px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  color: #fff;
+    background-color: #ddaa63;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    color: #fff;
 }
 
 .submit-btn:hover {
-  background-color: #C89650;
+    background-color: #c89650;
 }
 
 html,
 body {
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
 }
 
 body {
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  background: linear-gradient(0deg, rgb(255, 96, 54), rgb(253, 38, 122)) no-repeat;
+    justify-content: space-evenly;
+    align-items: center;
+    background-color: #491d0b;
 }
 
 #swiper {
-  height: 70vh;
-  aspect-ratio: 2 / 3;
-  perspective: 1000px;
-  perspective-origin: center 50%;
-  transform-style: preserve-3d;
-  position: relative;
+    height: 70vh;
+    aspect-ratio: 2 / 3;
+    perspective: 1000px;
+    perspective-origin: center 50%;
+    transform-style: preserve-3d;
+    position: relative;
 }
 
 .card {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  border-radius: 20px;
-  overflow: hidden;
-  transform: translateZ(calc(-30px * var(--i))) translateY(calc(-20px * var(--i))) rotate(calc(-4deg * var(--i)));
-  filter: drop-shadow(2px 2px 20px rgba(0, 0, 0, 0.5));
-  cursor: pointer;
-  user-select: none;
-  transition: transform 0.5s;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    border-radius: 20px;
+    overflow: hidden;
+    transform: translateZ(calc(-30px * var(--i)))
+        translateY(calc(-20px * var(--i))) rotate(calc(-4deg * var(--i)));
+    filter: drop-shadow(2px 2px 20px rgba(0, 0, 0, 0.5));
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.5s;
 }
 
 .card img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: 50% 50%;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 50%;
 }
 
 #like,
 #dislike {
-  font-size: 16vh;
-  border-radius: 50%;
-  padding: 20px;
-  position: relative;
-  z-index: 1;
-  animation-name: animation1;
-  animation-duration: 1s;
-  animation-timing-function: ease-in-out;
-  animation-fill-mode: both;
-  /* don't run animation at the beginning */
-  animation-play-state: paused;
+    font-size: 16vh;
+    border-radius: 50%;
+    padding: 20px;
+    position: relative;
+    z-index: 1;
+    animation-name: animation1;
+    animation-duration: 1s;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: both;
+    /* don't run animation at the beginning */
+    animation-play-state: paused;
 }
 
 #like.trigger,
 #dislike.trigger {
-  animation-name: animation2;
+    animation-name: animation2;
 }
 
 #like {
-  color: red;
-  background-color: rgba(255, 255, 255, 0.5);
+    color: red;
+    background-color: rgba(255, 255, 255, 0.5);
 }
 
 #dislike {
-  color: #ccc;
-  background-color: rgba(0, 0, 0, 0.5);
+    color: #ccc;
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 @keyframes animation1 {
+    0%,
+    100% {
+        opacity: 0.2;
+    }
 
-  0%,
-  100% {
-    opacity: 0.2;
-  }
-
-  50% {
-    opacity: 1;
-  }
+    50% {
+        opacity: 1;
+    }
 }
 
 @keyframes animation2 {
+    0%,
+    100% {
+        opacity: 0.2;
+    }
 
-  0%,
-  100% {
-    opacity: 0.2;
-  }
-
-  50% {
-    opacity: 1;
-  }
+    50% {
+        opacity: 1;
+    }
 }
