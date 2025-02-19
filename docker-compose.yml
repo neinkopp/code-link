@@ -15,6 +15,26 @@ services:
         user: "1000:33"
         networks:
             - code-link-network
+        environment:
+            CONTAINER_ROLE: app
+    code-link-app-queue:
+        build:
+            args:
+                user: jakob
+                uid: 1000
+            context: ./
+            dockerfile: Dockerfile
+        image: code-link
+        container_name: code-link-app-queue
+        restart: unless-stopped
+        working_dir: /var/www/
+        volumes:
+            - ./:/var/www:cached # Mount Laravel project directory
+        user: "1000:33"
+        networks:
+            - code-link-network
+        environment:
+            CONTAINER_ROLE: queue
 
     code-link-nginx:
         image: nginx:latest
