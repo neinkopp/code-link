@@ -19,7 +19,7 @@ header {
 }
 
 .logo img {
-    width: 70px;
+    width: 50px;
 }
 
 nav {
@@ -66,17 +66,17 @@ main {
     justify-content: center;
     align-items: center;
 
-    padding-top: 60px;
+    padding-top: 40px;
+    height: auto;
 }
 
 .form-container {
     background-color: #f3ede7;
-    padding: 40px;
+    padding: 30px;
     border-radius: 10px;
     color: #8b5e56;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
-    width: 400px;
     height: auto;
 }
 
@@ -107,8 +107,10 @@ textarea {
     padding: 5px;
     border: 2px solid #ddaa63;
     border-radius: 5px;
-    font-size: 16px;
+    font-size: 13px;
     color: #333;
+    font-family: arial;
+    outline: none;
 }
 
 select {
@@ -206,19 +208,19 @@ body {
 }
 
 #like {
-    color: red;
-    background-color: rgba(255, 255, 255, 0.5);
+    color: #eddad3;
+    background-color: #8da69e;
 }
 
 #dislike {
-    color: #ccc;
-    background-color: rgba(0, 0, 0, 0.5);
+    color: #8da69e;
+    background-color: #eddad3;
 }
 
 @keyframes animation1 {
     0%,
     100% {
-        opacity: 0.2;
+        opacity: 0.5;
     }
 
     50% {
@@ -229,7 +231,7 @@ body {
 @keyframes animation2 {
     0%,
     100% {
-        opacity: 0.2;
+        opacity: 0.5;
     }
 
     50% {

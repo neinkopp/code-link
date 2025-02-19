@@ -1,0 +1,102 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #491d0b; /* Dark background like in your screenshot */
+    margin: 0;
+    padding: 20px;
+    color: #fff; /* White text for contrast */
+}
+
+.h1-container {
+    display: flex;
+    justify-content: center;
+}
+
+h1 {
+    text-align: center;
+    color: #f2f2f2; /* Light color for heading */
+    font-size: 2em;
+    font-family: sans-serif;
+    font-weight: lighter;
+    border-radius: 2em;
+    background-color: #d69916;
+    padding: 0.5em;
+}
+
+form {
+    max-width: 600px;
+    background: rgb(238, 231, 228); /* Darker brown-red form background */
+    padding: 20px;
+    margin: 0 auto;
+    border-radius: 8px;
+    margin-top: 0.7em;
+}
+
+label {
+    font-weight: bold;
+    display: block;
+    margin-top: 10px;
+    color: rgb(107, 67, 51); /* Light text for labels */
+    font-size: 1.5em;
+    font-family: sans-serif;
+    font-weight: lighter;
+}
+
+input,
+textarea {
+    width: 96%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #9e5e1e; /* Darker input border */
+    border-radius: 4px;
+    font-size: 1.5em;
+    font-family: sans-serif;
+    background-color: rgb(226, 211, 188); /* Darker background for inputs */
+    color: rgb(107, 67, 51); /* White text inside inputs */
+    margin-right: 2em;
+    text-decoration: none;
+}
+
+textarea {
+    resize: vertical;
+}
+
+button {
+    margin-left: 42%;
+    padding: 1em;
+    background: #8da69e;
+    color: white;
+    border: none;
+    border-radius: 1em;
+    font-size: 1.5em;
+    margin-top: 15px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #688179;
+}
+
+button:active {
+    background: #4b645c;
+}
+
+a {
+    font-family: sans-serif;
+    font-weight: lighter;
+    font-size: 1.5em;
+    background: #8da69e;
+    color: white;
+    border: none;
+    border-radius: 1em;
+    padding: 0.7em;
+    text-decoration: none;
+    margin-bottom: 4em;
+}
+
+a:hover {
+    background: #688179;
+}
+
+a:active {
+    background: #4b645c;
+}

@@ -5,8 +5,12 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="{{ asset('css/style.css') }}">
+	<link rel="stylesheet" href="{{ asset('css/swipe.css') }}">
 	<title>Laravel</title>
 </head>
+@extends('alert')
+
+@section('content')
 
 <body>
 	<header>
@@ -15,9 +19,8 @@
 		</div>
 		<nav>
 			<ul>
-				<li><a href="#">Community</a></li>
-				<li><a href="#">About Us</a></li>
-				<li><a href="#">Contact</a></li>
+				<li class="active-buttons"><a href="edit-profile">Edit your profile</a></li>
+				<li class="active-buttons"><a href="matches">See Matches</a></li>
 			</ul>
 			<div class="auth-buttons">
 				<form action="{{ route('logout') }}" method="POST">
@@ -29,32 +32,6 @@
 	</header>
 	<h1>Benutzer swipen</h1>
 
-	<form action="{{ route('swipe') }}" method="POST">
-		@csrf
-		<div>
-			<label for="to_user_id">Diesen Benutzer beurteilen:</label>
-			<select name="to_user_id" id="to_user_id">
-				@foreach($usersToSwipeOn as $user)
-				<option value="{{ $user['id'] }}">{{ $user['login'] }}</option>
-				@endforeach
-			</select>
-		</div>
-
-		<div>
-			<input type="radio" name="liked" value="1" id="liked_yes">♥️
-			<input type="radio" name="liked" value="0" id="liked_no">💔
-		</div>
-
-		<button type="submit">Swipen</button>
-	</form>
-
-	<!-- hidden form to submit swipes -->
-	<form id="swipeForm" action="{{ route('swipe') }}" method="POST">
-		@csrf
-		<input type="hidden" name="from_user_id" value="{{ auth()->id() }}"> <!-- Get current user ID -->
-		<input type="hidden" name="to_user_id" id="toUserId">
-		<input type="hidden" name="liked" id="liked">
-	</form>
 
 	@if(session('error'))
 	<p>{{ session('error') }}</p>
@@ -64,34 +41,47 @@
 	<p>{{ session('success') }}</p>
 	@endif
 
-	<ion-icon id="dislike" name="heart-dislike"></ion-icon>
-	<div id="swiper">
-		@foreach($usersToSwipeOn as $index => $user)
-		<div class="card" style="--i:{{ $index }}">
-			<img src="{{ $user['avatar_url'] }}" alt="{{ $user['login'] }}">
-			<p>{{ $user['login'] }}</p>
+	<div class="flex-container">
+		<div>
+			<ion-icon id="dislike" name="heart-dislike"></ion-icon>
 		</div>
-		@endforeach
-	</div>
+		<div id="swiper">
+			<!-- Cards will be appended here -->
 
-	<ion-icon id="like" name="heart"></ion-icon>
+		</div>
+		<div>
+			<ion-icon id="like" name="heart"></ion-icon>
+		</div>
+	</div>
+	<!-- Hidden Form for Swiping -->
+	<form id="swipeForm" action="{{ route('swipe') }}" method="POST">
+		@csrf
+		<input type="hidden" name="from_user_id" value="{{ Auth::id() }}">
+		<input type="hidden" name="to_user_id" id="toUserId">
+		<input type="hidden" name="liked" id="liked">
+	</form>
 
 	<script>
 		class Card {
 			constructor({
 				imageUrl,
 				username,
+				profile_name,
 				userId,
 				onDismiss,
 				onLike,
-				onDislike
+				onDislike,
+				languages
 			}) {
 				this.imageUrl = imageUrl;
 				this.username = username;
+				this.profile_name = profile_name;
 				this.userId = userId;
 				this.onDismiss = onDismiss;
 				this.onLike = onLike;
 				this.onDislike = onDislike;
+				this.languages = languages;
+
 				this.#init();
 			}
 
@@ -110,9 +100,20 @@
 				img.src = this.imageUrl;
 				card.append(img);
 
+				const profile_name = document.createElement('p');
+				profile_name.classList.add('info-container');
+				profile_name.textContent = this.profile_name;
+				card.append(profile_name);
+
 				const name = document.createElement('p');
-				name.textContent = this.username;
+				name.classList.add('info-container');
+				name.textContent = "@" + this.username;
 				card.append(name);
+
+				const languages = document.createElement('p');
+				languages.classList.add('info-container');
+				languages.textContent = "Languages: " + (Array.isArray(this.languages) ? this.languages.join(', ') : this.languages);
+				card.append(languages);
 
 				this.element = card;
 
@@ -122,6 +123,7 @@
 					this.#listenToMouseEvents();
 				}
 			}
+
 
 			#listenToTouchEvents = () => {
 				this.element.addEventListener('touchstart', (e) => {
@@ -249,11 +251,13 @@
 		const like = document.querySelector('#like');
 		const dislike = document.querySelector('#dislike');
 
-		function appendNewCard(imageUrl, username, userId) {
+		function appendNewCard(imageUrl, profile_name, username, userId, languages) {
 			const card = new Card({
 				imageUrl: imageUrl,
+				profile_name: profile_name,
 				username: username,
 				userId: userId,
+				languages: languages,
 				onDismiss: () => {},
 				onLike: () => {
 					like.style.animationPlayState = 'running';
@@ -266,17 +270,47 @@
 			});
 			swiper.append(card.element);
 		}
+		@if(count($usersToSwipeOn) > 0)
+		appendNewCard(
+			'showcase-code-picture/{{ $usersToSwipeOn[0]["id"] }}',
+			'{{ $usersToSwipeOn[0]["profile_name"] }}',
+			'{{ $usersToSwipeOn[0]["username"] }}',
+			'{{ $usersToSwipeOn[0]["id"] }}',
+			'@json($usersToSwipeOn[0]["programming_langs"])'
+		);
+		@endif
+	</script>
 
-		@foreach($usersToSwipeOn as $user)
-		appendNewCard('{{ $user['
-			avatar_url '] }}', '{{ $user['
-			login '] }}', '{{ $user['
-			id '] }}');
-		@endforeach
+	<script>
+		setInterval(function() {
+			$.ajax({
+				url: '{{ route("matches.getMatches") }}',
+				type: 'GET',
+				dataType: 'json',
+				success: function(response) {
+					if (response.message) {
+						toastr.success(response.message);
+					}
+
+					if (response.matches.length > 0) {
+						$('#matches-list').html('');
+						response.matches.forEach(function(match) {
+							$('#matches-list').append(
+								'<div class="match-item">' + match.name + '</div>'
+							);
+						});
+					}
+				},
+				error: function() {
+					console.log('Error fetching matches');
+				}
+			});
+		}, 2000);
 	</script>
 
 	<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
 	<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 </body>
+@endsection
 
 </html>

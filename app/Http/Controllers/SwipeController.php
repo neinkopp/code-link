@@ -8,21 +8,20 @@ use Illuminate\Http\Request; //ermöglicht den Zugriff auf Daten, die von einem 
 use Illuminate\Support\Facades\DB; //importiert die DB Facade um direte SQL Queries zu schreiben 
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\JsonResponse;
 
 class SwipeController extends Controller
 {
 	// Liste der Nutzer anzeigen, die geswiped werden können
 	public function show()
 	{
-		// Benutzer auflisten, die nicht der aktuelle Benutzer sind
-		//$usersToSwipeOn = User::where('id', '!=', Auth::id())->get();
-
 		$userId = Auth::id();
 
-		// Alle Nutzer abrufen, die nicht der aktuelle Benutzer sind
-		$usersToSwipeOn = User::where('id', '!=', $userId)
-			->whereNotIn('id', Swipe::where('from_user_id', $userId)->pluck('to_user_id')) // Bereits geswipte Nutzer ausschließen
-			->inRandomOrder() // Zufällige Reihenfolge
+		$usersToSwipeOn = User::where('users.id', '!=', $userId)
+			->whereNotIn('users.id', Swipe::where('from_user_id', $userId)->pluck('to_user_id'))
+			->leftJoin('profiles', 'users.id', '=', 'profiles.user_id') // Join profiles
+			->select('users.id', 'users.name as username', 'profiles.name as profile_name', 'profiles.programming_langs') // Alias for name columns
+			->inRandomOrder()
 			->get();
 
 		return view('swipe', compact('usersToSwipeOn'));
@@ -53,28 +52,71 @@ class SwipeController extends Controller
 
 		return redirect()->back()->with('success', 'Swipe successful.');
 	}
+
 	public function getMatches()
-	{ //alle Matches abrufen bzw ein match entsteht wenn sich zwei Nutzer gegenseitg liken 
+	{
+		$userId = Auth::id();
 
-		$userId = Auth::id(); //id holen 
-
-		$matches = DB::table('swipes as s1') //s1 ist ein Alias für die erste Swipe Tabelle 
-			->join('swipes as s2', function ($join) { //s2 ist ein Alis für eine zweite Kopie der Swipe Tabl
-				$join->on('s1.from_user_id', '=', 's2.to_user_id') //der join verbindet Swipes bei denen person a person b geliked und person b person a 
+		$matches = DB::table('swipes as s1')
+			->join('swipes as s2', function ($join) {
+				$join->on('s1.from_user_id', '=', 's2.to_user_id')
 					->on('s1.to_user_id', '=', 's2.from_user_id');
 			})
-			->join('users as u1', 'u1.id', '=', DB::raw('LEAST(s1.from_user_id, s1.to_user_id)'))
-			->join('users as u2', 'u2.id', '=', DB::raw('GREATEST(s1.from_user_id, s1.to_user_id)'))
-			->where('s1.liked', true) //nur liked bzw true berücksichtigen 
+			->join('users as matched_user', function ($join) use ($userId) {
+				$join->on('matched_user.id', '=', DB::raw("
+					CASE 
+						WHEN s1.from_user_id = $userId THEN s1.to_user_id 
+						ELSE s1.from_user_id 
+					END
+				"));
+			})
+			->where('s1.liked', true)
 			->where('s2.liked', true)
 			->where(function ($query) use ($userId) {
-				$query->where('s1.from_user_id', $userId) //der user kann entweder derjenige sein der den Swipe gemacht hat
-					->orWhere('s1.to_user_id', $userId); //oder derjenige der geswiped wurde 
+				$query->where('s1.from_user_id', $userId)
+					->orWhere('s1.to_user_id', $userId);
 			})
-			->select('u1.* as user1', 'u2.* as user2')
+			->select('matched_user.*')
 			->distinct()
 			->get();
 
+		$newMatches = $matches->filter(function ($match) {
+			return !session()->has("match_shown_{$match->id}");
+		});
+
+		if ($newMatches->isNotEmpty()) {
+			session()->flash('match', 'You have a new match!');
+
+			foreach ($newMatches as $match) {
+				session()->put("match_shown_{$match->id}", true);
+			}
+		}
+
+		if (request()->ajax()) {
+			return response()->json([
+				'matches' => $matches,
+				'message' => $newMatches->isNotEmpty() ? 'You have a new match!' : null
+			]);
+		}
+
 		return view('matches', compact('matches'));
+	}
+
+
+
+	public function getUsersToSwipeOn()
+	{
+		$users = DB::table('users')
+			->join('profiles', 'users.id', '=', 'profiles.user_id')
+			->select(
+				'users.id',
+				'users.name',
+				'profiles.occupation',
+				'profiles.programming_langs',
+				'profiles.name'
+			)
+			->get();
+
+		return view('users', compact('users'));
 	}
 }
