@@ -40,6 +40,8 @@ Route::middleware('auth')->group(function () {
 
 		Route::get('/edit-profile', [ProfileController::class, 'edit'])->name('profile.edit');
 		Route::post('/edit-profile', [ProfileController::class, 'update'])->name('profile.update');
+
+		Route::get('/get-matches', [SwipeController::class, 'getMatches'])->name('matches.getMatches');
 	});
 
 	Route::get('/create-profile', [ProfileController::class, 'showCreation'])->name('create-profile');

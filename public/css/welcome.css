@@ -1,0 +1,92 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #491d0b;
+}
+
+.text-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 17%;
+}
+
+h1 {
+    font-family: monospace;
+    font-size: 4em;
+    color: white;
+}
+
+.login-btn {
+    display: flex;
+    background-color: #8da69e;
+    font-size: 2em;
+    font-family: sans-serif;
+    padding: 0.7em;
+    border-radius: 2em;
+    text-decoration: none;
+    color: white;
+    margin-top: 0.5em;
+}
+
+.login-btn:hover {
+    background-color: #688179;
+}
+
+.login-btn:active {
+    background-color: #4b645c;
+}
+
+#heart {
+    position: relative;
+    width: 100px;
+    height: 90px;
+    animation: mymove 4s infinite;
+}
+
+#heart:before,
+#heart:after {
+    position: absolute;
+    content: "";
+    left: 50px;
+    top: 0;
+    width: 50px;
+    height: 80px;
+    background: rgb(214, 171, 30);
+    border-radius: 50px 50px 0 0;
+    transform: rotate(-45deg);
+    transform-origin: 0 100%;
+    animation: colorheart 4s infinite;
+}
+
+#heart:after {
+    left: 0;
+    transform: rotate(45deg);
+    transform-origin: 100% 100%;
+}
+
+@keyframes mymove {
+    0% {
+        top: 0px;
+    }
+    50% {
+        top: 15px;
+    }
+    100% {
+        top: 0px;
+    }
+}
+
+@keyframes colorheart {
+    0% {
+        background: rgb(214, 171, 30);
+    }
+    50% {
+        background: rgb(212, 16, 16);
+    }
+    100% {
+        background: rgb(214, 171, 30);
+    }
+}

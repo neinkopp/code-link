@@ -1,0 +1,68 @@
+.flex-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5%;
+}
+
+.flex-container > *:not(#swiper) {
+    flex: 1;
+    text-align: center;
+}
+
+.card {
+    min-width: 300px;
+    max-width: 100%;
+    background-color: rgb(21, 23, 24);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    text-align: center;
+    height: auto;
+}
+
+.card img {
+    max-width: 100%;
+    height: auto;
+    border: 3px solid #ddd;
+    border-radius: 8px;
+    padding: 5px;
+    background-color: white;
+    align-self: center;
+}
+
+.info-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding-top: 10px;
+    width: 100%;
+    flex-grow: 1;
+    min-height: 0;
+}
+
+.active-buttons a {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #d4800a;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.active-buttons a:hover {
+    background-color: #c16b05;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.active-buttons a:active {
+    background-color: #9e5c00;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}

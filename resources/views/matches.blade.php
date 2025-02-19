@@ -4,26 +4,28 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Deine Matches</title>
+	<link rel="stylesheet" href="{{ asset('css/matches.css') }}">
+	<title>Your Matches</title>
 </head>
 
 <body>
-	<h1>Deine Matches</h1>
+	<h1>Your Matches</h1>
 
 	@if($matches->isEmpty())
-	<p>Noch keine Matches gefunden. Bleib dran mit swipen!</p>
+	<p>No matches found yet. Keep swiping! 🚀</p>
 	@else
 	<ul>
 		@foreach($matches as $match)
 		<li>
-			Gematcht mit Benutzer:
+			Matched with user
 			{{ $match->name }}
 		</li>
 		@endforeach
 	</ul>
 	@endif
-
-	<a href="/swipe">Mehr Swipen</a> <!-- Replace with dynamic user selection -->
+	<div class=btn-container>
+		<a href="/swipe">Swipe more</a>
+	</div>
 </body>
 
 </html>

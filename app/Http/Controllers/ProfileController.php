@@ -18,6 +18,12 @@ class ProfileController extends Controller
 
 	public function showCreation()
 	{
+		$userId = Auth::id();
+
+		$existingProfile = Profile::where('user_id', $userId)->first()->exists();
+		if ($existingProfile) {
+			return redirect()->route('swipe');
+		}
 		return view('create-profile');
 	}
 
