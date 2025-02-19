@@ -20,7 +20,7 @@ class ProfileController extends Controller
 	{
 		$userId = Auth::id();
 
-		$existingProfile = Profile::where('user_id', $userId)->first()->exists();
+		$existingProfile = Profile::where('user_id', $userId)->exists();
 		if ($existingProfile) {
 			return redirect()->route('swipe');
 		}
