@@ -30,7 +30,6 @@
 			</div>
 		</nav>
 	</header>
-	<h1>Benutzer swipen</h1>
 
 
 	@if(session('error'))

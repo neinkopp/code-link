@@ -1,0 +1,35 @@
+services:
+    code-link-app:
+        build:
+            args:
+                user: jakob
+                uid: 1000
+            context: ./
+            dockerfile: Dockerfile
+        image: code-link
+        container_name: code-link-app
+        restart: unless-stopped
+        working_dir: /var/www/
+        volumes:
+            - ./:/var/www:cached # Mount Laravel project directory
+        user: "1000:33"
+        networks:
+            - code-link-network
+
+    code-link-nginx:
+        image: nginx:latest
+        container_name: code-link-nginx
+        restart: unless-stopped
+        ports:
+            - "8090:80" # NGINX exposed on port 8090
+        volumes:
+            - ./:/var/www # Ensure NGINX has access to Laravel files
+            - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+        depends_on:
+            - code-link-app
+        networks:
+            - code-link-network
+
+networks:
+    code-link-network:
+        driver: bridge
