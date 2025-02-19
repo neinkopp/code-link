@@ -75,7 +75,7 @@
 				this.onDismiss = onDismiss;
 				this.onLike = onLike;
 				this.onDislike = onDislike;
-				this.languages = languages;
+				this.languages = languages ? JSON.parse(languages).join(', ') : 'none';
 
 				this.#init();
 			}
@@ -128,7 +128,7 @@
 
 				const languages = document.createElement('p');
 				languages.classList.add('info-container');
-				languages.textContent = "Languages: " + (Array.isArray(this.languages) ? this.languages.join(', ') : this.languages);
+				languages.textContent = "Languages: " + this.languages;
 				infoDetails.append(languages);
 
 				this.element = card;
@@ -291,8 +291,8 @@
 			'showcase-code-picture/{{ $usersToSwipeOn[0]["id"] }}',
 			'{{ $usersToSwipeOn[0]["profile_name"] }}',
 			'{{ $usersToSwipeOn[0]["username"] }}',
-			'{{ $usersToSwipeOn[0]["id"] }}',
-			'{{ implode(", ", json_decode(json_decode($usersToSwipeOn[0]["programming_langs"], true))) }}'
+			'{{ $usersToSwipeOn[0]["id"] }}', 
+			{!!json_encode(json_decode($usersToSwipeOn[0]["programming_langs"], true) ? : "") !!}
 		);
 		@endif
 	</script>
