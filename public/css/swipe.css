@@ -13,7 +13,7 @@
 .card {
     min-width: 300px;
     max-width: 100%;
-    background-color: rgb(21, 23, 24);
+    background-color: #a98b84;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
@@ -22,28 +22,69 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     text-align: center;
-    height: auto;
 }
 
-.card img {
-    max-width: 100%;
-    height: auto;
-    border: 3px solid #ddd;
-    border-radius: 8px;
-    padding: 5px;
-    background-color: white;
-    align-self: center;
+.card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: 50% 50%;
+    background-color: #151718;
+}
+.img-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.info-wrapper {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    width: 100%;
+    min-height: 0;
+    padding-top: 15px;
 }
 
 .info-container {
+    padding-top: 10px;
+    padding-left: 15px;
+    width: 100%;
+    min-height: 0;
+    text-align: start;
+}
+
+.info-container:first-of-type {
+    font-size: 20pt;
+}
+
+.info-details {
     display: flex;
     flex-direction: column;
     align-items: center;
-    text-align: center;
-    padding-top: 10px;
+    padding: 10px;
     width: 100%;
-    flex-grow: 1;
     min-height: 0;
+}
+
+.info-avatar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.info-avatar img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90px;
+    height: 90px;
+    overflow: hidden;
+    border-radius: 50%;
+    background-color: #f3ede7;
 }
 
 .active-buttons a {

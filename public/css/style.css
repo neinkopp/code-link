@@ -180,13 +180,6 @@ body {
     transition: transform 0.5s;
 }
 
-.card img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: 50% 50%;
-}
-
 #like,
 #dislike {
     font-size: 16vh;

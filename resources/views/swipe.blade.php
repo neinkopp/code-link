@@ -36,10 +36,6 @@
 	<p>{{ session('error') }}</p>
 	@endif
 
-	@if(session('success'))
-	<p>{{ session('success') }}</p>
-	@endif
-
 	<div class="flex-container">
 		<div>
 			<ion-icon id="dislike" name="heart-dislike"></ion-icon>
@@ -94,25 +90,46 @@
 				const card = document.createElement('div');
 				card.classList.add('card');
 				card.setAttribute('data-user-id', this.userId);
+				const imgWrapper = document.createElement('div');
+				imgWrapper.classList.add('img-wrapper');
+				card.append(imgWrapper);
+				const infoWrapper = document.createElement('div');
+				infoWrapper.classList.add('info-wrapper');
+				card.append(infoWrapper);
+
+				const infoAvatar = document.createElement('div');
+				infoAvatar.classList.add('info-avatar');
+				infoWrapper.append(infoAvatar);
+
+				const avatar = document.createElement('img');
+				// url is avatars.githubusercontent.com/u/userId?v=4
+				avatar.src = `https://avatars.githubusercontent.com/u/${this.userId}?v=4`;
+				infoAvatar.append(avatar);
+
+				const infoDetails = document.createElement('div');
+				infoDetails.classList.add('info-details');
+				infoWrapper.append(infoDetails);
 
 				const img = document.createElement('img');
+				img.classList.add('card-img');
 				img.src = this.imageUrl;
-				card.append(img);
+				imgWrapper.append(img);
+
 
 				const profile_name = document.createElement('p');
 				profile_name.classList.add('info-container');
 				profile_name.textContent = this.profile_name;
-				card.append(profile_name);
+				infoDetails.append(profile_name);
 
 				const name = document.createElement('p');
 				name.classList.add('info-container');
 				name.textContent = "@" + this.username;
-				card.append(name);
+				infoDetails.append(name);
 
 				const languages = document.createElement('p');
 				languages.classList.add('info-container');
 				languages.textContent = "Languages: " + (Array.isArray(this.languages) ? this.languages.join(', ') : this.languages);
-				card.append(languages);
+				infoDetails.append(languages);
 
 				this.element = card;
 
@@ -275,7 +292,7 @@
 			'{{ $usersToSwipeOn[0]["profile_name"] }}',
 			'{{ $usersToSwipeOn[0]["username"] }}',
 			'{{ $usersToSwipeOn[0]["id"] }}',
-			'@json($usersToSwipeOn[0]["programming_langs"])'
+			'{{ implode(", ", json_decode(json_decode($usersToSwipeOn[0]["programming_langs"], true))) }}'
 		);
 		@endif
 	</script>
